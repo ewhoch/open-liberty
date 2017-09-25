@@ -65,7 +65,7 @@ public class LibertyTracingMethodAdapter extends AbstractRasMethodAdapter<Abstra
                             "entry",
                             Type.getMethodDescriptor(
                                                      Type.VOID_TYPE,
-                                                     new Type[] { TRACE_COMPONENT_TYPE, Type.getType(String.class), Type.getType(Object[].class) }), false);
+                                                     new Type[] { TRACE_COMPONENT_TYPE, Type.getType(String.class), Type.getType(Object[].class) }));
         } else {
             visitVarInsn(getClassAdapter().getClassType().getOpcode(ILOAD), 0);
             visitGetTraceObjectField();
@@ -77,7 +77,7 @@ public class LibertyTracingMethodAdapter extends AbstractRasMethodAdapter<Abstra
                             "entry",
                             Type.getMethodDescriptor(
                                                      Type.VOID_TYPE,
-                                                     new Type[] { Type.getType(Object.class), TRACE_COMPONENT_TYPE, Type.getType(String.class), Type.getType(Object[].class) }), false);
+                                                     new Type[] { Type.getType(Object.class), TRACE_COMPONENT_TYPE, Type.getType(String.class), Type.getType(Object[].class) }));
         }
 
         visitLabel(skipTraceLabel);
@@ -110,7 +110,7 @@ public class LibertyTracingMethodAdapter extends AbstractRasMethodAdapter<Abstra
                                 "exit",
                                 Type.getMethodDescriptor(
                                                          Type.VOID_TYPE,
-                                                         new Type[] { TRACE_COMPONENT_TYPE, Type.getType(String.class), Type.getType(Object.class) }), false);
+                                                         new Type[] { TRACE_COMPONENT_TYPE, Type.getType(String.class), Type.getType(Object.class) }));
             } else {
                 visitVarInsn(getClassAdapter().getClassType().getOpcode(ILOAD), 0);
                 visitInsn(SWAP);
@@ -124,7 +124,7 @@ public class LibertyTracingMethodAdapter extends AbstractRasMethodAdapter<Abstra
                                 "exit",
                                 Type.getMethodDescriptor(
                                                          Type.VOID_TYPE,
-                                                         new Type[] { Type.getType(Object.class), TRACE_COMPONENT_TYPE, Type.getType(String.class), Type.getType(Object.class) }), false);
+                                                         new Type[] { Type.getType(Object.class), TRACE_COMPONENT_TYPE, Type.getType(String.class), Type.getType(Object.class) }));
             }
         } else {
             if (isStatic()) {
@@ -136,7 +136,7 @@ public class LibertyTracingMethodAdapter extends AbstractRasMethodAdapter<Abstra
                                 "exit",
                                 Type.getMethodDescriptor(
                                                          Type.VOID_TYPE,
-                                                         new Type[] { TRACE_COMPONENT_TYPE, Type.getType(String.class) }), false);
+                                                         new Type[] { TRACE_COMPONENT_TYPE, Type.getType(String.class) }));
             } else {
                 visitVarInsn(getClassAdapter().getClassType().getOpcode(ILOAD), 0);
                 visitGetTraceObjectField();
@@ -147,7 +147,7 @@ public class LibertyTracingMethodAdapter extends AbstractRasMethodAdapter<Abstra
                                 "exit",
                                 Type.getMethodDescriptor(
                                                          Type.VOID_TYPE,
-                                                         new Type[] { Type.getType(Object.class), TRACE_COMPONENT_TYPE, Type.getType(String.class) }), false);
+                                                         new Type[] { Type.getType(Object.class), TRACE_COMPONENT_TYPE, Type.getType(String.class) }));
             }
         }
 
@@ -186,7 +186,7 @@ public class LibertyTracingMethodAdapter extends AbstractRasMethodAdapter<Abstra
                         "debug",
                         Type.getMethodDescriptor(
                                                  Type.VOID_TYPE,
-                                                 new Type[] { TRACE_COMPONENT_TYPE, Type.getType(String.class), Type.getType(Object[].class) }), false);
+                                                 new Type[] { TRACE_COMPONENT_TYPE, Type.getType(String.class), Type.getType(Object[].class) }));
 
         visitLabel(skipTraceLabel);
         setModifiedMethod(true);
@@ -218,7 +218,7 @@ public class LibertyTracingMethodAdapter extends AbstractRasMethodAdapter<Abstra
                         INVOKESTATIC,
                         TR_TYPE.getInternalName(),
                         "debug",
-                        "(Lcom/ibm/websphere/ras/TraceComponent;Ljava/lang/String;Ljava/lang/Object;)V", false);
+                        "(Lcom/ibm/websphere/ras/TraceComponent;Ljava/lang/String;Ljava/lang/Object;)V");
 
         visitLabel(skipTraceLabel);
         setModifiedMethod(true);
@@ -238,7 +238,7 @@ public class LibertyTracingMethodAdapter extends AbstractRasMethodAdapter<Abstra
                         "register",
                         Type.getMethodDescriptor(
                                                  TRACE_COMPONENT_TYPE,
-                                                 new Type[] { Type.getType(Class.class) }), false);
+                                                 new Type[] { Type.getType(Class.class) }));
         visitSetTraceObjectField();
         setModifiedMethod(true);
     }
@@ -248,7 +248,7 @@ public class LibertyTracingMethodAdapter extends AbstractRasMethodAdapter<Abstra
                         INVOKESTATIC,
                         TRACE_COMPONENT_TYPE.getInternalName(),
                         "isAnyTracingEnabled",
-                        Type.getMethodDescriptor(Type.BOOLEAN_TYPE, new Type[0]), false);
+                        Type.getMethodDescriptor(Type.BOOLEAN_TYPE, new Type[0]));
         visitJumpInsn(IFEQ, skipTraceLabel);
 
         visitGetTraceObjectField();
@@ -259,7 +259,7 @@ public class LibertyTracingMethodAdapter extends AbstractRasMethodAdapter<Abstra
                         INVOKEVIRTUAL,
                         TRACE_COMPONENT_TYPE.getInternalName(),
                         guardMethodName,
-                        Type.getMethodDescriptor(Type.BOOLEAN_TYPE, new Type[0]), false);
+                        Type.getMethodDescriptor(Type.BOOLEAN_TYPE, new Type[0]));
         visitJumpInsn(IFEQ, skipTraceLabel);
     }
 
@@ -269,7 +269,7 @@ public class LibertyTracingMethodAdapter extends AbstractRasMethodAdapter<Abstra
             visitMethodInsn(Opcodes.INVOKESTATIC,
                             "com/ibm/websphere/ras/DataFormatHelper",
                             "sensitiveToString",
-                            "(Ljava/lang/Object;)Ljava/lang/String;", false);
+                            "(Ljava/lang/Object;)Ljava/lang/String;");
         } else {
             super.boxSensitive(type);
         }

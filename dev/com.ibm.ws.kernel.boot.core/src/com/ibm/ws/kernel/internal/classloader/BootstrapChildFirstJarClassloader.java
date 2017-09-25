@@ -24,9 +24,6 @@ import java.util.List;
  * instances.
  */
 public final class BootstrapChildFirstJarClassloader extends JarFileClassLoader {
-    static {
-        ClassLoader.registerAsParallelCapable();
-    }
     static final String KERNEL_BOOT_CLASS_PREFIX = "com.ibm.ws.kernel.boot.";
     static final String KERNEL_BOOT_RESOURCE_PREFIX = "com/ibm/ws/kernel/boot/";
 
@@ -48,12 +45,12 @@ public final class BootstrapChildFirstJarClassloader extends JarFileClassLoader 
 
     /**
      * Delegates to constructor of superclass (JarFileClassLoader)
-     *
+     * 
      * @param urls
      *            the URLs from which to load classes and resources
      * @param parent
      *            the parent class loader for delegation
-     *
+     * 
      * @throws java.lang.SecurityException
      *             if a security manager exists and its
      *             checkCreateClassLoader method doesn't allow creation of a
@@ -63,33 +60,31 @@ public final class BootstrapChildFirstJarClassloader extends JarFileClassLoader 
         super(urls, false, parent);
     }
 
-    // NOTE that the rest of the methods in this class are duplicated in
+    // NOTE that the rest of the methods in this class are duplicated in 
     // com.ibm.ws.kernel.internal.classloader.BootstrapChildFirstURLClassloader
     // Any changes must be made to both sources
     @Override
-    protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
-        synchronized (getClassLoadingLock(name)) {
-            Class<?> result = null;
+    protected synchronized Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+        Class<?> result = null;
 
-            if (name == null || name.length() == 0)
-                return null;
+        if (name == null || name.length() == 0)
+            return null;
 
-            result = findLoadedClass(name);
-            if (result == null) {
-                if (name.startsWith(BootstrapChildFirstJarClassloader.KERNEL_BOOT_CLASS_PREFIX))
+        result = findLoadedClass(name);
+        if (result == null) {
+            if (name.startsWith(BootstrapChildFirstJarClassloader.KERNEL_BOOT_CLASS_PREFIX))
+                result = super.loadClass(name, resolve);
+            else {
+                try {
+                    // Try to load the class from this classpath
+                    result = findClass(name);
+                } catch (ClassNotFoundException cnfe) {
                     result = super.loadClass(name, resolve);
-                else {
-                    try {
-                        // Try to load the class from this classpath
-                        result = findClass(name);
-                    } catch (ClassNotFoundException cnfe) {
-                        result = super.loadClass(name, resolve);
-                    }
                 }
             }
-
-            return result;
         }
+
+        return result;
     }
 
     @Override
